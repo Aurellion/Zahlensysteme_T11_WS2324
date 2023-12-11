@@ -12,6 +12,7 @@
                 Console.WriteLine("2: Binärzahl zu Dezimalzahl");
                 Console.WriteLine("3: Dezimalzahl zu Hexadezimalzahl");
                 Console.WriteLine("4: Hexadezimalzahl zu Dezimalzahl");
+                Console.WriteLine("5: Basis x zu Basis y");
 
 
                 string binärzahl = "";
@@ -53,7 +54,7 @@
                     case "4":
                         //Eingabe
                         Console.WriteLine("Hexadezimalzahl eingeben:");
-                        binärzahl = Console.ReadLine();
+                        hexadezimalzahl = Console.ReadLine();
                         //Verarbeitung
                         dezimalzahl = HexadezimalZuDezimal(hexadezimalzahl);
                         //Ausgabe
@@ -69,14 +70,26 @@
         private static int HexadezimalZuDezimal(string hexadezimalzahl)
         {
             int dezimalzahl = 0;
-            //...
+            for (int i = hexadezimalzahl.Length - 1; i >= 0; i--) 
+            {
+                int hex = BuchstabeZuZahl(hexadezimalzahl[hexadezimalzahl.Length - 1 - i].ToString());
+                dezimalzahl += hex * (int)Math.Pow(16, i);
+                Console.WriteLine(i + " " + hex + " " + dezimalzahl);
+            }
             return dezimalzahl;
         }
 
         private static string DezimalZuHexadezimal(int dezimalzahl)
         {
             string hexadezimalzahl = "";
-            //...
+            int rest;
+            int dividend = dezimalzahl;
+            while (dividend != 0)
+            {
+                rest = dividend % 16;//Rest der Division
+                dividend /= 16;//Neuer Dividend
+                hexadezimalzahl = ZahlZuBuchstabe(rest) + hexadezimalzahl;//String von links aufbauen 
+            }
             return hexadezimalzahl;
         }
 
@@ -109,14 +122,32 @@
         static int BuchstabeZuZahl(string Buchstabe)
         {
             int zahl=0;
-            //...
+            switch(Buchstabe.ToUpper())
+            {
+                case "A": zahl = 10; break;
+                case "B": zahl = 11; break;
+                case "C": zahl = 12; break;
+                case "D": zahl = 13; break;
+                case "E": zahl = 14; break;
+                case "F": zahl = 15; break;
+                default: zahl = Convert.ToInt32(Buchstabe); break;
+            }
             return zahl;
         }
 
         static string ZahlZuBuchstabe(int zahl)
         {
             string Buchstabe="";
-            //...
+            switch(zahl)
+            {
+                case 10: Buchstabe = "A"; break;
+                case 11: Buchstabe = "B"; break;
+                case 12: Buchstabe = "C"; break;
+                case 13: Buchstabe = "D"; break;
+                case 14: Buchstabe = "E"; break;
+                case 15: Buchstabe = "F"; break;
+                default: Buchstabe = zahl.ToString(); break;
+            }
             return Buchstabe;
         }
     }
