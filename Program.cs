@@ -1,4 +1,6 @@
-﻿namespace Zahlensysteme_T11_WS2324
+﻿using System;
+
+namespace Zahlensysteme_T11_WS2324
 {
     internal class Program
     {
@@ -27,7 +29,7 @@
                     case "1":
                         //Eingabe
                         Console.WriteLine("Dezimalzahl eingeben:");
-                        dezimalzahl = Convert.ToInt32(Console.ReadLine());
+                        dezimalzahl = IntEingabe();
                         //Verarbeitung
                         binärzahl = DezimalZuBinär(dezimalzahl);
                         //Ausgabe
@@ -60,11 +62,76 @@
                         //Ausgabe
                         Console.WriteLine($"[{hexadezimalzahl}]_16 = [{dezimalzahl}]_10");
                         break;
+                    case "5":
+                        //Eingabe
+                        Console.WriteLine("Zahl eingeben:");
+                        string zahlx = Console.ReadLine();
+                        Console.WriteLine("Ausgangsbasis eingeben:");
+                        int basisx = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Zielbasis eingeben:");
+                        int basisy = Convert.ToInt32(Console.ReadLine());
+                        //Verarbeitung
+                        string zahly = BasisXZuBasisY(zahlx, basisx, basisy);
+                        //Ausgabe
+                        Console.WriteLine($"[{zahlx}]_{basisx} = [{zahly}]_{basisy}");
+                        break;
                 }
                 Console.WriteLine("Neue Auswahl? (j/n)");
                 nochmal= Console.ReadLine();
             } while (nochmal == "j" || nochmal == "J");
             Console.WriteLine("Zahlensysteme:");
+        }
+
+        private static int IntEingabe()
+        {
+            int Ganzzahl;
+            string eingabe = "";
+            bool erfolgreich;
+            do
+            {
+                eingabe = Console.ReadLine();
+                erfolgreich = int.TryParse(eingabe, out Ganzzahl);
+                if (!erfolgreich)
+                    Console.Write("Ungültige Eingabe, bitte wiederholen. Eingabe="); 
+            } while (!erfolgreich);
+            
+            return Ganzzahl;
+        }
+
+        private static string BasisXZuBasisY(string zahlx, int basisx, int basisy)
+        {
+            //string zahly = "";
+            //int dezimal = BasisXZuDezimal(zahlx, basisx);
+            //zahly = DezimalZuBasisY(dezimal, basisy);
+            //return zahly;
+
+            return DezimalZuBasisY(BasisXZuDezimal(zahlx, basisx), basisy);
+        }
+
+        private static string DezimalZuBasisY(int dezimal, int basisy)
+        {
+            string zahl = "";
+            int rest;
+            int dividend = dezimal;
+            while (dividend != 0)
+            {
+                rest = dividend % basisy;//Rest der Division
+                dividend /= basisy;//Neuer Dividend
+                zahl = ZahlZuBuchstabe(rest) + zahl;//String von links aufbauen 
+            }
+            return zahl;
+        }
+
+        private static int BasisXZuDezimal(string zahlx, int basisx)
+        {
+            int dezimalzahl = 0;
+            for (int i = zahlx.Length - 1; i >= 0; i--)
+            {
+                int zahl = BuchstabeZuZahl(zahlx[zahlx.Length - 1 - i].ToString());
+                dezimalzahl += zahl * (int)Math.Pow(basisx, i);
+                Console.WriteLine(i + " " + zahl + " " + dezimalzahl);
+            }
+            return dezimalzahl;
         }
 
         private static int HexadezimalZuDezimal(string hexadezimalzahl)
