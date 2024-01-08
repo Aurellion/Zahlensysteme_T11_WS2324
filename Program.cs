@@ -47,7 +47,7 @@ namespace Zahlensysteme_T11_WS2324
                     case "3":
                         //Eingabe
                         Console.WriteLine("Dezimalzahl eingeben:");
-                        dezimalzahl = Convert.ToInt32(Console.ReadLine());
+                        dezimalzahl = IntEingabe();
                         //Verarbeitung
                         hexadezimalzahl = DezimalZuHexadezimal(dezimalzahl);
                         //Ausgabe
